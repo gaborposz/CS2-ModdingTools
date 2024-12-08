@@ -1,7 +1,88 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<CS2BootConfigPath>$(ManagedPath)\..\boot.config</CS2BootConfigPath>
+		<EnableCS2DebuggingConfigLine>player-connection-debug=1</EnableCS2DebuggingConfigLine>
+		<CS2UnityVersion>$([System.Environment]::GetEnvironmentVariable('CSII_UNITYVERSION', 'EnvironmentVariableTarget.User'))</CS2UnityVersion>
+		<CS2UnityPath>$(ProgramFiles)\Unity $(CS2UnityVersion)</CS2UnityPath>
+	</PropertyGroup>	
+	
+	<Target Name="CheckCS2ModdingEnvironment" BeforeTargets="BeforeBuild;BeforeClean">
+		<Error Condition="'$(ManagedPath)' == '' Or '$(CS2UnityVersion)' == ''" Text="The Cities Skylines 2 and Unity installation paths are not set. Make sure you that you are using CS2-ModdingTools from a CS2 modding project!" />
+		<Error Condition="!Exists('$(ManagedPath)')" Text="The Cities Skylines 2 folder ($(ManagedPath)) was not found!" />
+		<Error Condition="!Exists('$(CS2UnityPath)')" Text="The Unity folder ($(CS2UnityPath)) was not found!" />
+	</Target>
 
-  <Target Name="CS2ModdingToolsTest" BeforeTargets="BeforeBuild">
-    <Message Text="CS2-ModdingTools Test" Importance="High" />
-  </Target>
+	<Target Name="EnableCS2Debugging" AfterTargets="CoreBuild" Condition="'$(Configuration)' == 'Debug'">
+		<CallTarget Targets="EnableCS2DebuggingInBootConfig;CopyDebuggingUnityBinaries" />
+	</Target>
+
+	<Target Name="DisableCS2Debugging_InCleanBuild" AfterTargets="CoreClean">
+		<CallTarget Targets="DisableCS2DebuggingInBootConfig;CopyReleaseUnityBinaries" />
+	</Target>
+
+	<Target Name="DisableCS2Debugging_InReleaseBuild" AfterTargets="CoreBuild" Condition="'$(Configuration)' == 'Release'">
+		<CallTarget Targets="DisableCS2DebuggingInBootConfig;CopyReleaseUnityBinaries" />
+	</Target>
+
+	<Target Name="EnableCS2DebuggingInBootConfig" >
+		<ReadLinesFromFile File="$(CS2BootConfigPath)">
+			<Output TaskParameter="Lines" ItemName="BootConfigLines" />
+		</ReadLinesFromFile>
+
+		<FindInList List="@(BootConfigLines)" ItemSpecToFind="$(EnableCS2DebuggingConfigLine)">
+			<Output TaskParameter="ItemFound" PropertyName="PlayerConnectionDebugLine" />
+		</FindInList>
+
+		<WriteLinesToFile
+			File="$(CS2BootConfigPath)"
+			Lines="%0a$(EnableCS2DebuggingConfigLine)"
+			Overwrite="false"
+			Condition="'$(PlayerConnectionDebugLine)' == ''" />
+	</Target>
+
+	<Target Name="DisableCS2DebuggingInBootConfig" >
+		<ReadLinesFromFile File="$(CS2BootConfigPath)">
+			<Output TaskParameter="Lines" ItemName="BootConfigLines" />
+		</ReadLinesFromFile>
+
+		<ItemGroup>
+			<ConfigLinesWithoutDebuggingConfigLine Include="@(BootConfigLines)" Condition="'%(Identity)' != '$(EnableCS2DebuggingConfigLine)'" />
+		</ItemGroup>
+
+		<WriteLinesToFile
+			File="$(CS2BootConfigPath)"
+			Lines="@(ConfigLinesWithoutDebuggingConfigLine)"
+			Overwrite="true" />
+	</Target>
+
+	<Target Name="CopyDebuggingUnityBinaries" >
+		<PropertyGroup>
+			<UnityBinariesPath>$(CS2UnityPath)\Editor\Data\PlaybackEngines\windowsstandalonesupport\Variations\win64_player_development_mono</UnityBinariesPath>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<UnityBinaries Include="$(UnityBinariesPath)\NVUnityPlugin.dll" />
+			<UnityBinaries Include="$(UnityBinariesPath)\UnityPlayer.dll" />
+			<UnityBinaries Include="$(UnityBinariesPath)\UnityPlayer_Win64_player_development_mono_x64.pdb" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" />
+	</Target>
+
+	<Target Name="CopyReleaseUnityBinaries" >
+		<PropertyGroup>
+			<UnityBinariesPath>$(CS2UnityPath)\Editor\Data\PlaybackEngines\windowsstandalonesupport\Variations\win64_player_nondevelopment_mono</UnityBinariesPath>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<UnityBinaries Include="$(UnityBinariesPath)\NVUnityPlugin.dll" />
+			<UnityBinaries Include="$(UnityBinariesPath)\UnityPlayer.dll" />
+			<FilesToCleanUp Include="$(ManagedPath)\..\..\UnityPlayer_Win64_player_development_mono_x64.pdb" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" />
+
+		<Delete Files="@(FilesToCleanUp)" />
+	</Target>
 
 </Project>
