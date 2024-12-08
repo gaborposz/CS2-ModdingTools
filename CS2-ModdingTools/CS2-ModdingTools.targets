@@ -1,0 +1,7 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="CS2ModdingToolsTest" BeforeTargets="BeforeBuild">
+    <Message Text="CS2-ModdingTools Test" Importance="High" />
+  </Target>
+
+</Project>

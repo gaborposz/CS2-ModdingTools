@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>CS2_ModdingTools</RootNamespace>
+		<PackageType>MSBuild</PackageType>
+		<Title>Helper utilities for Cities Skylines 2 modding</Title>
+		<Version>0.0.1</Version>
+		<Authors>gaborp</Authors>
+		<RepositoryUrl>github.com:gaborposz/CS2-ModdingTools.git</RepositoryUrl>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Update="CS2-ModdingTools.targets" Pack="true" PackagePath="build\">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>
