@@ -3,6 +3,10 @@
 		<CS2BootConfigPath>$(ManagedPath)\..\boot.config</CS2BootConfigPath>
 		<EnableCS2DebuggingConfigLine>player-connection-debug=1</EnableCS2DebuggingConfigLine>
 		<CS2UnityVersion>$([System.Environment]::GetEnvironmentVariable('CSII_UNITYVERSION', 'EnvironmentVariableTarget.User'))</CS2UnityVersion>
+		<CS2UnityPath>$([System.Environment]::GetEnvironmentVariable('CSII_UNITYFOLDER', 'EnvironmentVariableTarget.User'))</CS2UnityPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(CS2UnityPath)' == ''">
 		<CS2UnityPath>$(ProgramFiles)\Unity $(CS2UnityVersion)</CS2UnityPath>
 	</PropertyGroup>	
 	
