@@ -28,7 +28,7 @@ jobs:
       run: dotnet build CS2-ModdingTools/CS2-ModdingTools.csproj --configuration Release --no-restore
 
     - name: Pack
-      run: dotnet pack CS2-ModdingTools/CS2-ModdingTools.csproj --configuration Release --no-build --output ./nupkgs
+      run: dotnet pack CS2-ModdingTools/CS2-ModdingTools.csproj --configuration Release --no-build --output nupkgs
 
-    - name: Publish to NuGet
-      run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    - name: Publish to NuGet.org
+      run: dotnet nuget push nupkgs\*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

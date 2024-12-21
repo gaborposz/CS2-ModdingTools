@@ -8,6 +8,7 @@
 		<Title>Cities Skylines 2 modding tools</Title>
 		<Authors>gaborp</Authors>
 		<PackageLicenseFile>licenses\LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Description>Helper utilities for Cities Skylines 2 modding</Description>
 		<PackageTags>CS2 Cities Skylines 2 mod modding tools utility utilities auto automatic debug debugging</PackageTags>
 		<RepositoryUrl>github.com:gaborposz/CS2-ModdingTools.git</RepositoryUrl>
@@ -26,6 +27,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="..\LICENSE" Pack="true" PackagePath="licenses" />
+		<None Include="..\README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
 </Project>
