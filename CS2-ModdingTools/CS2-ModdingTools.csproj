@@ -5,17 +5,27 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<RootNamespace>CS2_ModdingTools</RootNamespace>
 		<PackageType>MSBuild</PackageType>
-		<Title>Helper utilities for Cities Skylines 2 modding</Title>
-		<Version>0.0.2</Version>
+		<Title>Cities Skylines 2 modding tools</Title>
 		<Authors>gaborp</Authors>
+		<PackageLicenseFile>licenses\LICENSE</PackageLicenseFile>
+		<Description>Helper utilities for Cities Skylines 2 modding</Description>
+		<PackageTags>CS2 Cities Skylines 2 mod modding tools utility utilities auto automatic debug debugging</PackageTags>
 		<RepositoryUrl>github.com:gaborposz/CS2-ModdingTools.git</RepositoryUrl>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="CS2-ModdingTools.targets" Pack="true" PackagePath="build\">
+	  <PackageReference Include="Nerdbank.GitVersioning" Version="3.7.112">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="CS2-ModdingTools.targets" Pack="true" PackagePath="build">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Include="..\LICENSE" Pack="true" PackagePath="licenses" />
 	</ItemGroup>
 
 </Project>
