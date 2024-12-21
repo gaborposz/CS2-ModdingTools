@@ -1,0 +1,32 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0
+
+    - name: Restore dependencies
+      run: dotnet restore CS2-ModdingTools/CS2-ModdingTools.csproj
+
+    - name: Build
+      run: dotnet build CS2-ModdingTools/CS2-ModdingTools.csproj --configuration Release --no-restore
+
+    - name: Pack
+      run: dotnet pack CS2-ModdingTools/CS2-ModdingTools.csproj --configuration Release --no-build --output ./nupkgs
+
+    - name: Publish to NuGet
+      run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
