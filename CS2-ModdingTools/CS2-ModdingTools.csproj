@@ -4,7 +4,6 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<RootNamespace>CS2_ModdingTools</RootNamespace>
-		<PackageType>MSBuild</PackageType>
 		<Title>Cities Skylines 2 modding tools</Title>
 		<Authors>gaborp</Authors>
 		<PackageLicenseFile>licenses\LICENSE</PackageLicenseFile>
