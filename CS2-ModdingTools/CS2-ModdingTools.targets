@@ -8,8 +8,8 @@
 
 	<PropertyGroup Condition="'$(CS2UnityPath)' == ''">
 		<CS2UnityPath>$(ProgramFiles)\Unity $(CS2UnityVersion)</CS2UnityPath>
-	</PropertyGroup>	
-	
+	</PropertyGroup>
+
 	<Target Name="CheckCS2ModdingEnvironment" BeforeTargets="BeforeBuild;BeforeClean">
 		<Error Condition="'$(ManagedPath)' == '' Or '$(CS2UnityVersion)' == ''" Text="The Cities Skylines 2 and Unity installation paths are not set. Make sure you that you are using CS2-ModdingTools from a CS2 modding project!" />
 		<Error Condition="!Exists('$(ManagedPath)')" Text="The Cities Skylines 2 folder ($(ManagedPath)) was not found!" />
@@ -21,7 +21,7 @@
 	</Target>
 
 	<Target Name="DisableCS2Debugging_InCleanBuild" AfterTargets="CoreClean">
-		<CallTarget Targets="DisableCS2DebuggingInBootConfig;CopyReleaseUnityBinaries" />
+		<CallTarget Targets="DisableCS2DebuggingInBootConfig;CopyReleaseUnityBinaries;BuildGetFullPaths;CleanupModBinariesFromGameFolder" />
 	</Target>
 
 	<Target Name="DisableCS2Debugging_InReleaseBuild" AfterTargets="CoreBuild" Condition="'$(Configuration)' == 'Release'">
@@ -87,6 +87,10 @@
 		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" />
 
 		<Delete Files="@(FilesToCleanUp)" />
+	</Target>
+
+	<Target Name="CleanupModBinariesFromGameFolder">
+		<RemoveDir Directories="$(DeployDir)" />
 	</Target>
 
 </Project>

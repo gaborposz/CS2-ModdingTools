@@ -16,6 +16,17 @@ In Release and Clean builds these steps are reverted to disable debugging.
 the steps above might not be triggered if the sources have not changed since the last build.
 In this case run a Rebuild (Clean + Build) to ensure that debugging is disabled/enabled.
 
+### Automatic cleanup of mod binaries in Clean build
+The default behavior of the SDK is that the compiled binaries are left in the game's directory 
+(`%userprofile%\AppData\Locallow\Colossal Order\Cities Skylines II\Mods\%ModName%`)
+even if a clean build was performed.
+
+Because of this the mod appears in the game even if it is not added in Paradox Mods,
+or it can eclipse the Paradox Mods' version, unless it was manually deleted.
+
+This package automatically deletes the mod's binaries in Clean builds, 
+so that the "original game state" is restored.
+
 ## How to install
 Simple reference the latest version of the CS-ModdingTools NuGet package 
 from your Cities Skylines 2 modding project.
