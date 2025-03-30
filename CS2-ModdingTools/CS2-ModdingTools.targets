@@ -70,7 +70,7 @@
 			<UnityBinaries Include="$(UnityBinariesPath)\UnityPlayer_Win64_player_development_mono_x64.pdb" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" />
+		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
 	</Target>
 
 	<Target Name="CopyReleaseUnityBinaries" >
@@ -84,7 +84,7 @@
 			<FilesToCleanUp Include="$(ManagedPath)\..\..\UnityPlayer_Win64_player_development_mono_x64.pdb" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" />
+		<Copy SourceFiles="@(UnityBinaries)" DestinationFolder="$(ManagedPath)\..\.." UseHardlinksIfPossible="true" SkipUnchangedFiles="true" />
 
 		<Delete Files="@(FilesToCleanUp)" />
 	</Target>
